@@ -1,22 +1,26 @@
 <?php
 
-use Symfony\Component\HttpFoundation\Request;
-
 require_once __DIR__ . '/vendor/autoload.php';
 
-$app = new \Silex\Application();
-$app['debug'] = true;
-$app['application'] = new \SpeechToText\Application();
+use Silex\Application;
+use SpeechToText\ApplicationService;
+use Symfony\Component\HttpFoundation\Request;
 
+$dotenv = new Dotenv\Dotenv(__DIR__);
+$dotenv->load();
+
+$app = new Application();
+$app['debug'] = true;
+$app['application'] = new ApplicationService();
+
+$app->register(new Silex\Provider\ServiceControllerServiceProvider());
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__ . '/views',
 ));
 
 $app->get('/', function () use ($app) {
 
-    return $app['twig']->render('demo.twig', array(
-        'name' => 'leo',
-    ));
+    return $app['twig']->render('demo.twig');
 
 });
 

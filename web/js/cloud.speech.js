@@ -48,13 +48,6 @@ cloud.Speech = function () {
     this.recordButton_ = document.getElementById('speech_demo_record_button');
 
     /**
-     * Processing caption inside the record button.
-     * @private {!Element|null}
-     */
-    this.processingCaption_ = document.getElementById(
-        'speech_demo_record_processing');
-
-    /**
      * Time display caption inside the record button.
      * @private {!Element|null}
      */
@@ -328,7 +321,14 @@ cloud.Speech.prototype.showResults = function (data) {
     this.isProcessing_ = false;
     this.resultContainer_.style.display = 'block';
     this.setButtonState('');
-    this.result_.textContent = data.join('');
+
+    var text = data.join('');
+
+    if (text === "false") {
+        text = "Nu am inteles. Poti, te rog, sa repeti ?"
+    }
+
+    this.result_.textContent = text;
 };
 
 
@@ -355,7 +355,7 @@ cloud.Speech.prototype.startRecording = function () {
     var timerUpdate;
     var recTime = 0;
     var formattedTime = '00';
-    var totalTime = ' / 00:' + this.MAX_RECORD_TIME.toString().slice(0, -3);
+    var totalTime = '';
     this.resultContainer_.style.display = 'none';
     this.errorContainer_.style.display = 'none';
     this.setButtonState('recording');
@@ -416,19 +416,21 @@ cloud.Speech.prototype.setButtonState = function (state) {
         case 'processing':
             this.recordButton_.classList.remove('recording');
             this.recordButton_.classList.add('processing');
-            this.processingCaption_.style.display = 'block';
+            this.recordButton_.textContent = 'Processing...';
+            this.recordButton_.setAttribute('disabled', 'true');
             this.timerCaption_.style.display = 'none';
             break;
         case 'recording':
             this.recordButton_.classList.add('recording');
             this.recordButton_.classList.remove('processing');
-            this.processingCaption_.style.display = 'none';
+            this.recordButton_.textContent = 'Stop';
             this.timerCaption_.style.display = 'block';
             break;
         default:
             this.recordButton_.classList.remove('recording');
             this.recordButton_.classList.remove('processing');
-            this.processingCaption_.style.display = 'none';
+            this.recordButton_.textContent = 'Start';
+            this.recordButton_.removeAttribute('disabled');
             this.timerCaption_.style.display = 'none';
             break;
     }

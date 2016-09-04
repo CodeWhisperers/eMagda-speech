@@ -3,11 +3,12 @@
 namespace SpeechToText;
 
 use Google_Client;
+use Google_Service_CloudSpeechAPI;
 use Google_Service_CloudSpeechAPI_RecognitionAudio;
 use Google_Service_CloudSpeechAPI_RecognitionConfig;
 use Google_Service_CloudSpeechAPI_SyncRecognizeRequest;
 
-class Application
+class ApplicationService
 {
 
     /**
@@ -33,10 +34,10 @@ class Application
         $request->setConfig($c);
 
         $client = new Google_Client();
-        $client->setApplicationName('try-apis');
-        $client->setDeveloperKey('AIzaSyC-Svb3q9lnpAJgHyFIUuMGCMM6aupVuoI');
+        $client->setApplicationName(getenv('SPEECH_API_APP'));
+        $client->setDeveloperKey(getenv('SPEECH_API_KEY'));
 
-        $service = new \Google_Service_CloudSpeechAPI($client);
+        $service = new Google_Service_CloudSpeechAPI($client);
         $response = $service->speech->syncrecognize($request);
         $results = $response->getResults();
 

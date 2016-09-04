@@ -3,3 +3,9 @@
 
 # Composer PHAR
 /composer.phar
+
+# Composer vendor
+/vendor
+
+# Dotenv
+.env
