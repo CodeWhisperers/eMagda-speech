@@ -1,0 +1,19 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+
+    <button id="speech_demo_record_button">record g</button>
+
+    <h2>Log</h2>
+    <pre id="log"></pre>
+    <div id="speech_demo_record_timer" style="display: none;">00:07 / 00:30</div>
+    <div id="speech_demo_record_processing" style="display: none;">Processing</div>
+    <div id="speech_demo_error_container" style="display: none;">
+        <span class="material-icons">error</span>
+        <span>We are unable to process your request at this time. Please try again later.</span>
+    </div>
+    <div id="speech_demo_results_container">
+        <pre id="speech_demo_results"></pre>
+    </div>
+
+{% endblock %}
